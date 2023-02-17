@@ -1,7 +1,14 @@
 FROM openjdk:8
 
+WORKDIR /app
+
+COPY pom.xml .
+
+
 EXPOSE 8080
 
-ADD target/springrabbit-0.0.1-SNAPSHOT.jar springrabbit-0.0.1-SNAPSHOT.jar
 
-ENTRYPOINT ["java","-jar","springrabbit-0.0.1-SNAPSHOT.jar"]
+
+ADD target/springrabbit.jar springrabbit.jar
+
+ENTRYPOINT ["java","-jar","springrabbit.jar"]

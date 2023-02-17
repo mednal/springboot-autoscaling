@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springdeploy
+  labels:
+    app: springdeploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springdeploy
+  template:
+    metadata:
+      labels:
+        app: springdeploy
+    spec:
+      containers:
+        - name: springboot-app-dep
+          image: elnalouti/springrabbit.jar:latest
+          env:
+            - name: SPRING_RABBITMQ_HOST
+              value: localhost
+            - name: SPRING_RABBITMQ_PORT
+              value: "5672"
+            - name: SPRING_RABBITMQ_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-credentials #  done replace with your RabbitMQ credentials secret name
+                  key: username
+            - name: SPRING_RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-credentials # done replace with your RabbitMQ credentials secret name
+                  key: password
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: springboot-app-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: springdeploy
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Pods
+      pods:
+        metric:
+          name: messages_ready
+          selector:
+            matchLabels:
+              app: rabbitmq
+        target:
+          type: AverageValue
+          averageValue: "5"

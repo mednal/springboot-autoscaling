@@ -40,13 +40,13 @@ public class RabbitMQConfig {
     }
 
     //create custom connection factory
-	@Bean
-	ConnectionFactory connectionFactory() {
-		CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory("localhost");
-		cachingConnectionFactory.setUsername(username);
-		cachingConnectionFactory.setUsername(password);
-		return cachingConnectionFactory;
-	}
+    @Bean
+    ConnectionFactory connectionFactory() {
+        CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory("localhost");
+        cachingConnectionFactory.setUsername(username);
+        cachingConnectionFactory.setUsername(password);
+        return cachingConnectionFactory;
+    }
 
     //create MessageListenerContainer using custom connection factory
 	/*@Bean
