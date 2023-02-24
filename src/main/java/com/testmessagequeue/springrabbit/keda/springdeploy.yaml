@@ -49,10 +49,10 @@ spec:
     - type: Pods
       pods:
         metric:
-          name: messages_ready
+          name: rabbitmq_queue_messages_ready
           selector:
             matchLabels:
               app: rabbitmq
         target:
           type: AverageValue
-          averageValue: "5"
+          averageValue: 5
